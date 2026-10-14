@@ -196,8 +196,8 @@ export const SupabaseSettingsModal = ({
             border: '1px solid var(--border-subtle)',
             fontSize: '0.82rem'
           }}>
-            <div style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span>🚀 3-Step Supabase Cloud Setup</span>
+            <div style={{ fontWeight: 700, marginBottom: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>🚀 Supabase Project: <code style={{ color: 'var(--primary)', padding: '2px 6px', background: 'var(--border-subtle)', borderRadius: '4px' }}>fmuswojgoimfwallfpgx</code></span>
               <button
                 onClick={handleCopySchemaPath}
                 className="btn btn-ghost btn-sm"
@@ -207,10 +207,14 @@ export const SupabaseSettingsModal = ({
                 <span>{copied ? 'Path Copied!' : 'Copy Schema File Path'}</span>
               </button>
             </div>
-            <ol style={{ paddingLeft: '1.2rem', lineHeight: 1.6, color: 'var(--text-muted)' }}>
-              <li>Create a free database at <a href="https://supabase.com" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', fontWeight: 600 }}>supabase.com</a>.</li>
-              <li>Go to <strong>SQL Editor</strong> & execute our provided script in <code>supabase/schema.sql</code>.</li>
-              <li>Copy your <strong>Project URL</strong> and <strong>anon key</strong> from Settings &rarr; API into the inputs above!</li>
+            <ol style={{ paddingLeft: '1.2rem', lineHeight: 1.7, color: 'var(--text-muted)' }}>
+              <li>
+                Open the <a href="https://supabase.com/dashboard/project/fmuswojgoimfwallfpgx/sql/new" target="_blank" rel="noreferrer" style={{ color: '#10b981', fontWeight: 700, textDecoration: 'underline' }}>SQL Editor for fmuswojgoimfwallfpgx</a> & paste the contents of <code>supabase/schema.sql</code>, then click <strong>Run</strong>.
+              </li>
+              <li>
+                Open <a href="https://supabase.com/dashboard/project/fmuswojgoimfwallfpgx/settings/api" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'underline' }}>Project API Keys</a> & copy the <strong>anon public key</strong>.
+              </li>
+              <li>Paste the key into the input above and click <strong>Save & Connect</strong>. Realtime PostgreSQL sync will be live immediately!</li>
             </ol>
           </div>
         </div>

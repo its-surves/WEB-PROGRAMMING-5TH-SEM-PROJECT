@@ -4,6 +4,9 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_STORAGE_KEY_URL = 'taskflow_supabase_url';
 const SUPABASE_STORAGE_KEY_ANON = 'taskflow_supabase_anon_key';
 
+export const DEFAULT_SUPABASE_URL = 'https://fmuswojgoimfwallfpgx.supabase.co';
+export const SUPABASE_PROJECT_ID = 'fmuswojgoimfwallfpgx';
+
 export const getSupabaseCredentials = () => {
   const storedUrl = localStorage.getItem(SUPABASE_STORAGE_KEY_URL);
   const storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_ANON);
@@ -11,7 +14,7 @@ export const getSupabaseCredentials = () => {
   const envKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
   return {
-    url: storedUrl || envUrl || '',
+    url: storedUrl || envUrl || DEFAULT_SUPABASE_URL,
     anonKey: storedKey || envKey || ''
   };
 };
