@@ -21,13 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$rawInput = file_get_contents("php://input");
-$payload = json_decode($rawInput, true);
+define('SUPABASE_URL', 'https://fmuswojgoimfwallfpgx.supabase.co');
+define('SUPABASE_ANON_KEY', 'sb_publishable__hjzOrQ4Y-dwAjvsK58nvg_nomVK5Qu');
 
-if (!$payload || !isset($payload['tasks']) || !is_array($payload['tasks'])) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid payload. 'tasks' array expected."]);
-    exit;
+$rawInput = file_get_contents("php://input");
+$payload = json_decode($rawInput, true) ?? [];
+$tasks = $payload['tasks'] ?? null;
+
+if ($tasks === null || !is_array($tasks)) {
+    $opts = [
+        "http" => [
+            "method" => "GET",
+            "header" => "apikey: " . SUPABASE_ANON_KEY . "\r\n" .
+                        "Authorization: Bearer " . SUPABASE_ANON_KEY . "\r\n" .
+                        "Accept: application/json\r\n"
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $supaRes = @file_get_contents(SUPABASE_URL . "/rest/v1/tasks?select=*", false, $context);
+    if ($supaRes !== false) {
+        $tasks = json_decode($supaRes, true) ?? [];
+    } else {
+        $tasks = [];
+    }
 }
 
 $projectName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $payload['projectName'] ?? 'taskflow_export');
@@ -46,7 +62,7 @@ fputs($output, "\xEF\xBB\xBF");
 fputcsv($output, ['ID', 'Task Title', 'Status', 'Priority', 'Assignee', 'Due Date', 'Created At']);
 
 // Write task rows
-foreach ($payload['tasks'] as $task) {
+foreach ($tasks as $task) {
     fputcsv($output, [
         $task['id'] ?? '',
         $task['title'] ?? '',

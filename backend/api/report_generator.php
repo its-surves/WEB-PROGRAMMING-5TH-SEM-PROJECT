@@ -35,24 +35,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
+define('SUPABASE_URL', 'https://fmuswojgoimfwallfpgx.supabase.co');
+define('SUPABASE_ANON_KEY', 'sb_publishable__hjzOrQ4Y-dwAjvsK58nvg_nomVK5Qu');
+
 // Handle POST: Process tasks data and generate report
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents("php://input");
-    $data = json_decode($rawInput, true);
+    $data = json_decode($rawInput, true) ?? [];
 
-    if (!$data || !isset($data['tasks'])) {
-        http_response_code(400);
-        header("Content-Type: application/json; charset=UTF-8");
-        echo json_encode([
-            "error" => "Invalid Payload",
-            "message" => "Required payload field 'tasks' array is missing."
-        ]);
-        exit;
-    }
-
-    $projectName = htmlspecialchars($data['projectName'] ?? 'Current Sprint Project');
-    $tasks = $data['tasks'];
+    $tasks = $data['tasks'] ?? null;
+    $projectName = htmlspecialchars($data['projectName'] ?? 'TaskFlow V2.0 Core Platform');
     $format = strtolower($data['format'] ?? 'html'); // 'html' or 'json'
+
+    // If tasks not directly supplied in payload, fetch live from Supabase PostgreSQL!
+    if ($tasks === null) {
+        $opts = [
+            "http" => [
+                "method" => "GET",
+                "header" => "apikey: " . SUPABASE_ANON_KEY . "\r\n" .
+                            "Authorization: Bearer " . SUPABASE_ANON_KEY . "\r\n" .
+                            "Accept: application/json\r\n"
+            ]
+        ];
+        $context = stream_context_create($opts);
+        $supaRes = @file_get_contents(SUPABASE_URL . "/rest/v1/tasks?select=*", false, $context);
+        if ($supaRes !== false) {
+            $tasks = json_decode($supaRes, true) ?? [];
+        } else {
+            $tasks = [];
+        }
+    }
 
     // Server-side Metrics Aggregation
     $totalTasks = count($tasks);

@@ -6,6 +6,7 @@ const SUPABASE_STORAGE_KEY_ANON = 'taskflow_supabase_anon_key';
 
 export const DEFAULT_SUPABASE_URL = 'https://fmuswojgoimfwallfpgx.supabase.co';
 export const SUPABASE_PROJECT_ID = 'fmuswojgoimfwallfpgx';
+export const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable__hjzOrQ4Y-dwAjvsK58nvg_nomVK5Qu';
 
 export const getSupabaseCredentials = () => {
   const storedUrl = localStorage.getItem(SUPABASE_STORAGE_KEY_URL);
@@ -15,7 +16,7 @@ export const getSupabaseCredentials = () => {
 
   return {
     url: storedUrl || envUrl || DEFAULT_SUPABASE_URL,
-    anonKey: storedKey || envKey || ''
+    anonKey: storedKey || envKey || DEFAULT_SUPABASE_ANON_KEY
   };
 };
 
