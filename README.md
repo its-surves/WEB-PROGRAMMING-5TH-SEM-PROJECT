@@ -44,9 +44,19 @@ A full-stack, production-grade dynamic web application engineered as a high-impa
 
 ## 🚀 Quick Start Guide
 
-### 1. Run the React Frontend Application
+### ⚡ One-Click Windows Launcher (Fastest)
+Simply double-click **`START_PROJECT.bat`** (or `start.bat`) in the root folder.
+It will automatically:
+- Check dependencies and install if missing
+- Launch the PHP microservice (if PHP is installed)
+- Start the Vite dev server on port `5173`
+- Automatically open `http://localhost:5173` in your default browser!
+
+---
+
+### 1. Manual Terminal Launch
 ```bash
-# Install dependencies (already executed)
+# Install dependencies
 npm install
 
 # Start Vite local development server
